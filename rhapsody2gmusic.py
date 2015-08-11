@@ -1,3 +1,21 @@
+"""
+    rhapsody2gmusic.py
+
+    Converts a Rhapsody playlist to a Google Music playlist
+    Requires gmusicapi >= 7.0.0-dev and Beautiful Soup
+
+    Required inputs:
+        email - Google Music email for an All Access account
+        password - Google Music password
+        android_device_id - an android device id, 16 hex digits
+        rhapsody_url - the url of the playlist as provided by the Rhapsody social
+        sharing options, e.g http://www.rhapsody.com/playlist/mp.145164964
+
+"""
+__author__ = 'Judson Mitchell'
+__email__ = 'judsonmitchell@gmail.com'
+__version__ = '0.0.1'
+
 from gmusicapi import Mobileclient, Musicmanager
 from operator import itemgetter
 import json
