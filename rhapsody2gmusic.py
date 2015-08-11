@@ -5,7 +5,6 @@ import urllib2
 import string
 from bs4 import BeautifulSoup
 from getpass import getpass
-import os
 import sys
 
 def parse_config():
@@ -25,7 +24,7 @@ def parse_config():
                 # If Password not in Config, ask for it
                 config['password'] = getpass()
     except IOError:
-        print "Can't find .config"
+        print "Can't find .config file"
         return False
     return config
 
@@ -36,10 +35,15 @@ if not config:
     config['password'] = getpass()
     config['android_device_id'] = raw_input('your android device id:')
 
+# Ask for shareable URL of playlist, e.g.http://www.rhapsody.com/playlist/mp.145164964
 rhapsody_url = raw_input('URL of your rhapsody playlist:')
 
 page = urllib2.urlopen(rhapsody_url).read()
 soup = BeautifulSoup(page, 'html.parser')
+if not soup.find('h1', {'id': 'page-name'}):
+    print 'Playlist not found'
+    sys.exit()
+
 name = soup.find('h1', {'id': 'page-name'}).text
 playlist_name = name.strip("\r\n")
 
