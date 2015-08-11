@@ -1,0 +1,3 @@
+email <your email address>
+password <your password - optional>
+android_device_id <your android device id - 16 hex digits, eg '1234567890abcdef'>
