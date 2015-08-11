@@ -36,7 +36,7 @@ for Google Play Music. On Android, you can obtain this ID by dialing
 python rhapsody2gmusic.py
 ```
 
-If you have not created a .config file, you will be prompted for your log in information. You will then be prompted for a Rhapsody playlist URL which should be the url provided by the social sharing options, e.g http://www.rhapsody.com/playlist/mp.145164964
+If you have not created a .config file, you will be prompted for your log in information. You will then be prompted for a Rhapsody playlist URL which should be the url provided by the social sharing options ("Share a Link"), e.g http://www.rhapsody.com/playlist/mp.145164964
 
 The script will then scrape the track metadata from the playlist page and attempt to match that information against the Gmusic API.  The script will tell you how many tracks have been successfully matched and then create a playlist of the same name on Google Music with those tracks.
 
