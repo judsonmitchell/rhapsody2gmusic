@@ -1,17 +1,44 @@
 from gmusicapi import Mobileclient, Musicmanager
 from operator import itemgetter
-import pprint
 import json
 import urllib2
 import string
 from bs4 import BeautifulSoup
 from getpass import getpass
+import os
 import sys
 
-email = raw_input('email:')
-password = getpass()
-android_device_id = raw_input('your android device id:')
-page = urllib2.urlopen('http://www.rhapsody.com/playlist/mp.153515987').read()
+def parse_config():
+    config = {} 
+    try:
+        with open(".config") as f:
+            lines = f.readlines()
+            for i in lines:
+                words = i.split()
+                if words[0] == 'email':
+                    config['email'] = words[1]
+                elif words[0] == 'password':
+                    config['password'] = i.split(' ',1)[1]
+                elif words[0] == 'android_device_id':
+                    config['android_device_id'] = i.split(' ',1)[1].strip()
+            if 'password' not in config:
+                # If Password not in Config, ask for it
+                config['password'] = getpass()
+    except IOError:
+        print "Can't find .config"
+        return False
+    return config
+
+config = parse_config()
+if not config:
+    config = {}
+    config['email'] = raw_input('email:')
+    config['password'] = getpass()
+    config['android_device_id'] = raw_input('your android device id:')
+
+rhapsody_url = raw_input('URL of your rhapsody playlist:')
+
+page = urllib2.urlopen(rhapsody_url).read()
 soup = BeautifulSoup(page, 'html.parser')
 name = soup.find('h1', {'id': 'page-name'}).text
 playlist_name = name.strip("\r\n")
@@ -29,11 +56,9 @@ for link in links:
     q = link['artist_name'] + ' ' + track_name 
     queries.append(q)
 
-print queries
-#sys.exit()
 #Now Google
 mc = Mobileclient()
-mc.login(email, password, android_device_id)
+mc.login(config['email'], config['password'], config['android_device_id'])
 
 hits = 0 
 misses = 0 
@@ -44,7 +69,7 @@ for q in queries:
     g_songs = search['song_hits']
     if any(g_songs):
         sort_by_score = sorted(g_songs, key=itemgetter('score'), reverse=True)
-        print sort_by_score[0]['track']['storeId']
+        #print sort_by_score[0]['track']['storeId']
         track_ids.append(sort_by_score[0]['track']['storeId'])
         hits += 1
     else:
@@ -52,8 +77,10 @@ for q in queries:
         failed_queries.append(q)
 
 print 'Hits: {0} Misses: {1}'.format(hits,misses)
-print failed_queries
+if misses > 0:
+    print 'Unable to find a Google Music match for these tracks:'
+    print failed_queries
 
 playlist_id = mc.create_playlist(playlist_name)
 mc.add_songs_to_playlist(playlist_id, track_ids)
-print 'done'
+print 'Playlist "{}" successfully added to Google Music with {} songs'.format(playlist_name, hits)
