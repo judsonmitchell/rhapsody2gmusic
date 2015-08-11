@@ -1,6 +1,6 @@
 # Rhapsody2Gmusic
 
-Converts a Rhapsody playlist to a Google Music playlist.  This uses the [Unofficial Google Music API](https://github.com/simon-weber/gmusicapi) and was tested against version 7.0.0-dev. Requires a Google Music All Access account.
+Converts a Rhapsody playlist to a Google Music playlist.  This uses the [Unofficial Google Music API](https://github.com/simon-weber/gmusicapi) (tested against version 7.0.0-dev). Requires a Google Music All Access account.
 
 ## Install
 
@@ -9,8 +9,8 @@ git clone https://github.com/judsonmitchell/rhapsody2gmusic
 ```
 
 Install the dependencies: 
-gmusicapi >= 7.0.0-dev
-bs4 >= 4.0.2
+* gmusicapi >= 7.0.0-dev
+* bs4 >= 4.0.2
 
 ## Configuration
 
@@ -38,7 +38,7 @@ python rhapsody2gmusic.py
 
 If you have not created a .config file, you will be prompted for your log in information. You will then be prompted for a Rhapsody playlist URL which should be the url provided by the social sharing options, e.g http://www.rhapsody.com/playlist/mp.145164964
 
-The script will then scrape the track metadata from the playlist page and attempt to match that information against the Gmusic API.  The script will tell you how many tracks have been successfully matched and then create a playlist of the same name on Google Music.
+The script will then scrape the track metadata from the playlist page and attempt to match that information against the Gmusic API.  The script will tell you how many tracks have been successfully matched and then create a playlist of the same name on Google Music with those tracks.
 
 ## License
 
